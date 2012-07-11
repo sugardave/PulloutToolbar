@@ -83,7 +83,7 @@ enyo.kind({
 					{name: "clientWrapper", components: [
 						{name: "client", fit: true, classes: "onyx-toolbar onyx-toolbar-inline"}
 					]},
-					{name: "pulltab", kind: enyo.Control, classes: "onyx-toolbar pulltab", components: [
+					{name: "pulltab", kind: enyo.Control, classes: "onyx-toolbar pulltab", ontap: "toggleToolbar", components: [
 						{kind: "onyx.Grabber", classes: "grabber"}
 					]}
 				];
@@ -91,7 +91,7 @@ enyo.kind({
 			case "bottom":
 			case "right":
 				components = [
-					{name: "pulltab", kind: enyo.Control, classes: "onyx-toolbar pulltab", components: [
+					{name: "pulltab", kind: enyo.Control, classes: "onyx-toolbar pulltab", ontap: "toggleToolbar", components: [
 						{kind: "onyx.Grabber", classes: "grabber"}
 					]},
 					{name: "clientWrapper", components: [
@@ -102,14 +102,17 @@ enyo.kind({
 		}
 		this.$.slider.createComponents(components, {owner: this});
 	},
-	hide: function() {
-		if (this.autoCollapse) {
+	hide: function(force) {
+		if (this.autoCollapse || force) {
 			(this.hasClass("left") || this.hasClass("top")) ? this.$.slider.animateToMin() : this.$.slider.animateToMax();
 		}
 	},
 	show: function() {
 		this.inherited(arguments);
 		(this.hasClass("left") || this.hasClass("top")) ? this.$.slider.animateToMax() : this.$.slider.animateToMin();
+	},
+	toggleToolbar: function() {
+		(this.hasClass("collapsed")) ? this.show() : this.hide(true);
 	},
 	setSlider: function() {
 		var popup = this;
