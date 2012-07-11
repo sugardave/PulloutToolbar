@@ -5,7 +5,7 @@ enyo.kind({
 	centered: false,
 	modal: false,
 	edge: "left",
-	classes: "pullout-toolbar",
+	classes: "pullout-toolbar enyo-unselectable",
 	published: {
 		autoCollapse: true,
 		pulltabPosition: -1 // -1 = left/top, 0 = center (pretty close), 1 = right/bottom
