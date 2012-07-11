@@ -1,4 +1,6 @@
-.pullout-toolbar {}
+.pullout-toolbar {
+	overflow: hidden;
+}
 	
 .pullout-toolbar.collapsed {
 	pointer-events: none;
