@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+	<head>
+		<title>PulloutToolbar Example</title>
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="viewport" content="width=device-width initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		
+		<script src="../../../enyo/enyo.js"></script>
+		<script src="./package.js"></script>
+		
+	</head>
+	<body class="onyx enyo-unselectable">
+		<script>
+			new enyo.Control({
+				name: "App",
+				style: "background-color: #000;",
+				classes: "enyo-fit",
+				components: [
+					{kind: enyo.FittableRows, classes: "enyo-fit", components: [
+						{kind: enyo.FittableColumns, style: "height: 50%; width: 100%;", components: [
+							{style: "height: 100%; width: 50%; background-color: #f00;"},
+							{style: "height: 100%; width: 50%; background-color: #ff0;"}
+						]},
+						{kind: enyo.FittableColumns, style: "height: 50%; width: 100%;", components: [
+							{style: "height: 100%; width: 50%; background-color: #0ff;"},
+							{style: "height: 100%; width: 50%; background-color: #00f;"}
+						]}
+					]}
+				],
+				rendered: function() {
+					this.createToolbar({}, {});
+				},
+				createToolbar: function(inSender, inEvent) {
+					if (this.$.toolbar) {
+						this.$.toolbar.destroy();
+					}
+					this.createComponent({
+						name: "toolbar",
+						kind: "sugardave.PulloutToolbar",
+						edge: inSender.edge || "left",
+						pulltabPosition: this.pulltabPosition || 0,
+						autoCollapse: this.autoCollapse || false
+					});
+					
+					this.addButtons();
+					this.$.toolbar.show();
+				},
+				addButtons: function() {
+					this.$.toolbar.createComponents([
+						{layoutKind: enyo.FittableColumnsLayout, components: [
+							{name: "autoCollapse", kind: onyx.Checkbox, style: "height: 32px;", onchange: "setCollapse"},
+							{style: "width: 5px;"},
+							{tag: "label", content: "Auto-collapse", style: "vertical-align: middle;"}
+						]},
+						{kind: onyx.Button, content: "Left", edge: "left", ontap: "createToolbar"},
+						{kind: onyx.Button, content: "Top", edge: "top", ontap: "createToolbar"},
+						{kind: onyx.Button, content: "Right", edge: "right", ontap: "createToolbar"},
+						{kind: onyx.Button, content: "Bottom", edge: "bottom", ontap: "createToolbar"},
+						{layoutKind: enyo.FittableRowsLayout, components: [
+							{tag: "label", content: "Pulltab position", style: "vertical-align: middle;"},
+							{style: "height: 5px;"},
+							{name: "pulltabPosition", kind: onyx.RadioGroup, onActivate: "setPulltab", components: [
+								{content: "Left/Top", value: -1},
+								{content: "Center", value: 0},
+								{content: "Right/Bottom", value: 1}
+							]}
+						]}
+					], {owner: this});
+					this.$.autoCollapse.setChecked(this.autoCollapse);
+				},
+				setCollapse: function(inSender, inEvent) {
+					this.autoCollapse = inSender.checked;
+					this.$.toolbar.setAutoCollapse(this.autoCollapse);
+				},
+				setPulltab: function(inSender, inEvent) {
+					if(!inSender.active) {
+						if (!this.pulltabPosition) {
+							this.pulltabPosition = 0;
+						}
+						if (inEvent.originator.value === this.pulltabPosition) {
+							inEvent.originator.setActive(true);
+						}
+						return;
+					}
+					this.pulltabPosition = inSender.active.value;
+					this.$.toolbar.setPulltabPosition(this.pulltabPosition);
+				}
+			}).write();
+		</script>
+	</body>
+</html>
