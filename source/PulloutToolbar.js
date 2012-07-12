@@ -132,10 +132,10 @@ enyo.kind({
 		(this.hasClass("collapsed")) ? this.expand(true) : this.collapse(true);
 	},
 	setSlider: function() {
-		var popup = this;
+		/*var popup = this;
 		var popupNode = popup.hasNode();
 		var popupWidth = popupNode.clientWidth;
-		var popupHeight = popupNode.clientHeight;
+		var popupHeight = popupNode.clientHeight;*/
 		
 		var slider = this.$.slider;
 		var sliderNode = slider.hasNode();
@@ -153,14 +153,14 @@ enyo.kind({
 				axis = "h";
 				unit = "%";
 				max = 100;
-				min = 100 - (Math.round(sliderWidth / popupWidth * 100));
+				//min = 100 - (Math.round(sliderWidth / popupWidth * 100));
 				min = 0;
 				break;
 			case "bottom":
 				axis = "v";
 				unit = "%";
 				max = 100;
-				min = 100 - (Math.round(sliderHeight / popupHeight * 100));
+				//min = 100 - (Math.round(sliderHeight / popupHeight * 100));
 				min = 0;
 				break;
 			case "left":
