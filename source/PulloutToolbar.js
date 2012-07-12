@@ -104,15 +104,32 @@ enyo.kind({
 	},
 	hide: function(force) {
 		if (this.autoCollapse || force) {
-			(this.hasClass("left") || this.hasClass("top")) ? this.$.slider.animateToMin() : this.$.slider.animateToMax();
+			this.collapse(!force);
 		}
 	},
 	show: function() {
 		this.inherited(arguments);
-		(this.hasClass("left") || this.hasClass("top")) ? this.$.slider.animateToMax() : this.$.slider.animateToMin();
+	},
+	collapse: function(animate) {
+		var min = (this.hasClass("left") || this.hasClass("top")) ? this.$.slider.getMin() : this.$.slider.getMax();
+		if (animate) {
+			this.$.slider.animateTo(min);
+		} else {
+			this.$.slider.setValue(min);
+		}
+	},
+	expand: function(animate) {
+		this.log();
+		var max = (this.hasClass("left") || this.hasClass("top")) ? this.$.slider.getMax() : this.$.slider.getMin();
+		if (animate) {
+			this.$.slider.animateTo(max);
+		} else {
+			this.$.slider.setValue(max);
+		}
 	},
 	toggleToolbar: function() {
-		(this.hasClass("collapsed")) ? this.show() : this.hide(true);
+		this.log();
+		(this.hasClass("collapsed")) ? this.expand(true) : this.collapse(true);
 	},
 	setSlider: function() {
 		var popup = this;
@@ -160,6 +177,7 @@ enyo.kind({
 		slider.setMax(max);
 	},
 	checkState: function() {
+		this.log();
 		switch(this.edge) {
 			case "top":
 			case "left":
